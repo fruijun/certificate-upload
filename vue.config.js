@@ -4,7 +4,7 @@ const webpack = require('webpack');
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');// 代码压缩
-const WebpackAssetsManifest = require('webpack-assets-manifest-plus');
+// const WebpackAssetsManifest = require('webpack-assets-manifest-plus');
 
 
 const IS_PROD = ['production','prod'].includes(process.env.NODE_ENV);
@@ -57,15 +57,15 @@ module.exports = {
         }
         // 配置插件statr
         let plugins = [
-          new WebpackAssetsManifest({
-            publicPath: true,
-            output: '../'+ OUTPUT_DIR + '.txt',
-            merge: true,
-          }),
+          // new WebpackAssetsManifest({
+          //   publicPath: true,
+          //   output: '../'+ OUTPUT_DIR + '.txt',
+          //   merge: true,
+          // }),
           new HtmlWebpackPlugin({
             template: './public/index.html',
             favicon: resolve('./public/favicon.ico'),
-            title: '中邮消费金融有限公司2020年社会招聘',
+            title: '贷款用途凭证',
             hash: true,
             minify: {
               removeAttributeQuotes: false, // 去除双引号(实际开发改为trur)

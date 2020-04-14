@@ -35,7 +35,7 @@ html,body {
   height: 100%;
 }
 body{
-  background-color: #080190FF;
+
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

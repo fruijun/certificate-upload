@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import 'yuki-createjs';
-require('yuki-createjs');
+// import 'yuki-createjs';
+// require('yuki-createjs');
 Vue.config.productionTip = false
 
 
@@ -21,7 +21,25 @@ createAPI(Vue, Popover, ['click', 'change'], true);
 // createAPI(Vue, PopAd, ['click', 'change'], true);
 // createAPI(Vue, Loading, [], true);
 
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(preview)
 
+
+//引入图片查看器
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+
+Vue.use(Viewer, {
+  defaultOptions: {
+    zIndex: 9999
+  }
+})
+
+let options = {
+  // fullscreenEl:false,
+}
+// Vue.use(preview,options);
 Vue.use(Toast);
 Vue.use(Slide);
 new Vue({
