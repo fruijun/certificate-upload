@@ -43,7 +43,7 @@ export default {
         },
         contentTextAlign:{
             type:String,
-            default:'center',
+            default:'left',
         },
         content:{
             type:String,
@@ -99,8 +99,8 @@ export default {
         },
         maskClick(e){
             this.$emit('EVENT_MASK_CLICK',e);
-            if(this.closeOnClickMask){
-                this.remove();
+            if(this.clickOnClickMask){
+                this.hide();
             }
         },
     },
@@ -119,20 +119,32 @@ export default {
     background-color: #fff;
 }
 .popover-title{
-    padding: 10px 20px 0;
+    padding: 20px 20px 0;
     font-size: 16px;
     text-align: center;
     color: #333;
 }
 .popover-content-area{
+    font-size: $fontSize15;
+    line-height: 8px;
     max-height:440px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     margin-top: 13px;
     margin-bottom: 13px;
     color: #666;
+}
+.popover-button-area {
+  border-top: 1px solid #e5e5e5; /*no*/
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
 }
 .popover-content-area.popover-multi-content {
     margin-top: 33px;
@@ -143,14 +155,15 @@ export default {
     line-height: 36px;
     word-wrap: break-word;
     &.textIndex{
-        text-indent:60px;
+        text-indent:30px;
     }
 }
 .popover-button{
     text-align: center;
     flex-grow: 1;
     font-size: 15px;
-    line-height: 26px;
+    line-height: 44px;
+    height: 44px;
 }
 .cancel-button{
     border-right: 1px solid #e5e5e5;
@@ -159,7 +172,7 @@ export default {
         color: #333;
     }
 }
-.conform-button{
+.confirm-button{
     color:#488ff0;
     &:active{
         color: #296dcc;

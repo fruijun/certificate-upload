@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
-    <router-view/>
+    <router-view v-if="IsRouterAlive"/>
   </div>
 </template>
 <script type="es6">
 import AppMixins from "@/mixins/App";
 import vconsole from 'vconsole';
+import sensors from '@/utils/sensors';
 export default {
   name:'app',
+  provide(){
+    return {
+      reload:this.reload
+    }
+  },
   mixins:[AppMixins],
   data(){
-    return {}
+    return {
+      IsRouterAlive:true
+    }
   },
-  // created(){},
-  async mounted(){
-      console.log('设备宽度,高度：',document.documentElement.clientWidth,document.documentElement.clientHeight);
-      if (process.env.VUE_APP_VCONSOLE === "true") {
-        new vconsole();
-      }
-  }
+  async created(){
+    if (process.env.VUE_APP_VCONSOLE === "true") {
+      new vconsole();
+    }
+  },
+  mounted(){
+    sensors.init();
+  },
+
+  methods:{
+    reload(){
+      this.IsRouterAlive = false;
+      this.$nextTick(function(){
+        this.IsRouterAlive = true;
+      })
+    },
+  },
 }
 </script>
 <style lang="scss">
@@ -33,6 +47,12 @@ export default {
 html,body {
   width: 100%;
   height: 100%;
+  background-color:$grayBg;
+}
+@media only screen and (device-width:375px) and (device-height:812px) and (-webkit-device-picel-ratio:3){
+  html,body{
+    height: 812px;
+  }
 }
 body{
 
@@ -44,8 +64,6 @@ body{
   text-align: center;
   color: #2c3e50;
   width: 100%;
-  height: 100%;
-  // background-color: yellow;
 }
 
 #nav {

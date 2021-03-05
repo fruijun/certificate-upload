@@ -18,7 +18,7 @@ const removePending = config => {
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL, // api的base_url
-  timeout: 120000, // request timeout
+  timeout: 240000, // request timeout
 });
 
 // request interceptor
@@ -33,6 +33,7 @@ service.interceptors.request.use(
         // 这里的ajax标识我是用请求地址&请求方式拼接的字符串，当然你可以选择其他的一些方式
       pending.push({ u: `${config.url}&${config.method}`, f: c });
     });
+    console.log('request config',config)
     return config;
   },
   error => {
@@ -45,29 +46,47 @@ service.interceptors.request.use(
 
 // respone interceptor
 // 对res进行拦截
-service.interceptors.response.use(
-  response => {
-    // debugger
-    // console.log('response.config1',response.config,pending.length)
+
+if(process.env.NODE_ENV === 'development'){
+  service.interceptors.response.use(  
+    response => {
+    // console.log('dev request response',response)
     removePending(response.config); // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
-    // console.log('response.config2',response.config,pending.length)
     if (pending.length === 0) {
       hideMask();
     }
     return response;
-  },
-  error => {
-    // store.dispatch('submitValues', { disabled: false });
-    hideMask();
-    if (error.message === 'Network Error') {
-      toast({
-        content: '网络不见了',
-      });
-    }
-    console.log(`err${error}`); // for debug
-
-    return Promise.reject(error);
-  },
-);
+  })
+}  else {
+  service.interceptors.response.use(
+    response => {
+      // console.log('pro request response',response)
+      // debugger
+      // console.log('response.config1',response.config,pending.length)
+      removePending(response.config); // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
+      // console.log('response.config2',response.config,pending.length)
+      if (pending.length === 0) {
+        hideMask();
+      }
+      return response;
+    },
+    error => {
+      console.log('request err',error)
+      // store.dispatch('submitValues', { disabled: false });
+      hideMask();
+      if (error.message === 'Network Error') {
+        toast({
+          content: '网络不见了',
+        });
+      }
+      console.log(`err${error}`); // for debug
+      // if(process.env.NODE_EVN === 'development'){
+      //   return Promise.resolve()
+      // }
+  
+      return Promise.reject(error);
+    },
+  );
+}
 
 export default service;
